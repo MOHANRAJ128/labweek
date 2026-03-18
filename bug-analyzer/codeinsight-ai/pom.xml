@@ -1,0 +1,89 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+	<groupId>com.codeinsight</groupId>
+	<artifactId>codeinsight-ai</artifactId>
+	<packaging>pom</packaging>
+	<modules>
+		<module>app</module>
+		<module>common-module</module>
+		<module>project-module</module>
+		<module>parser-module</module>
+		<module>indexing-module</module>
+		<module>log-module</module>
+		<module>ai-module</module>
+	</modules>
+	<name>codeinsight-ai</name>
+	<version>1.0-SNAPSHOT</version>
+	<description>AI-powered log + code root cause analyzer</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>21</java.version>
+		<lombok.version>1.18.32</lombok.version>
+	</properties>
+
+<dependencyManagement>
+    <dependencies>
+	<dependency>
+            <groupId>com.codeinsight</groupId>
+            <artifactId>common-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeinsight</groupId>
+            <artifactId>parser-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeinsight</groupId>
+            <artifactId>indexing-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeinsight</groupId>
+            <artifactId>project-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeinsight</groupId>
+            <artifactId>log-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.codeinsight</groupId>
+            <artifactId>ai-module</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+</project>

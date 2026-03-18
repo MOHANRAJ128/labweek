@@ -1,0 +1,3 @@
+Exception in thread "main" java.lang.ArithmeticException: / by zero
+        at com.service.UtilityService.minCoins(UtilityService.java:19)
+        at CoinChange.main(CoinChange.java:33)

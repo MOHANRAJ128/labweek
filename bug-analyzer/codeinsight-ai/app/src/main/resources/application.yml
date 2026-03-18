@@ -1,0 +1,24 @@
+codeinsight:
+  storage:
+    base-path: uploads/projects
+app:
+  timezone: Asia/Kolkata
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/codeinsight_ai?serverTimezone=Asia/Kolkata
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+#langchain4j:
+#openai:
+#  api-key: demo
+#  model-name: gpt-4o-mini
+
+langchain4j:
+  open-ai.chat-model:
+    api-key: demo
+    model-name: gpt-4o-mini

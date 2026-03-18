@@ -1,0 +1,31 @@
+
+<div class="container">
+  <h1>CodeInsight AI</h1>
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="file1">Select Project File:</label>
+      <input 
+        type="file" 
+        id="file1" 
+        (change)="onFile1Selected($event)"
+        required
+      />
+      <span class="file-name" *ngIf="file1">Selected: {{ file1.name }}</span>
+    </div>
+
+    <div class="form-group">
+      <label for="file2">Select Error File:</label>
+      <input 
+        type="file" 
+        id="file2" 
+        (change)="onFile2Selected($event)"
+        required
+      />
+      <span class="file-name" *ngIf="file2">Selected: {{ file2.name }}</span>
+    </div>
+
+    <button type="submit" class="submit-btn" [disabled]="!file1 || !file2">Upload Files</button>
+  </form>
+</div>
+
+<router-outlet />

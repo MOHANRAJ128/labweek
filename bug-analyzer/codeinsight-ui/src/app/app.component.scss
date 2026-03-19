@@ -76,6 +76,29 @@ label {
   }
 }
 
+.info-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid #667eea;
+  color: #667eea;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #eef2ff;
+  cursor: help;
+}
+
+.hint-text {
+  margin: -4px 0 4px;
+  color: #4a5568;
+  font-size: 12px;
+  font-weight: 500;
+}
+
 input[type="file"] {
   position: relative;
   padding: 20px 16px;
@@ -140,6 +163,17 @@ input[type="file"] {
     font-weight: bold;
     color: #48bb78;
   }
+}
+
+.error-text {
+  margin: 4px 0 0;
+  color: #e53e3e;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(229, 62, 62, 0.08);
+  border-left: 3px solid #e53e3e;
+  border-radius: 6px;
+  padding: 8px 10px;
 }
 
 .submit-btn {

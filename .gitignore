@@ -22,3 +22,28 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Docker / Compose local overrides
+.env
+.env.*
+!.env.example
+docker-compose.override.yml
+
+# Runtime generated data
+uploads/
+**/uploads/
+
+# Maven / Java build output (multi-module)
+**/target/
+
+# Node / Angular build output
+**/node_modules/
+**/dist/
+**/.angular/
+**/coverage/
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

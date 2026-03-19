@@ -6,7 +6,10 @@ import { Injectable } from '@angular/core';
 })
 export class FileUploadService {
 
-  baseUrl = 'http://localhost:8080';
+  // Empty baseUrl → requests are relative to the current host.
+  // In Docker, nginx proxies /ai/* /api/* /logs/* to the backend container.
+  // For local dev (ng serve), change this to 'http://localhost:8080'.
+  baseUrl = '';
 
   constructor(private http: HttpClient) { }
 

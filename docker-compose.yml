@@ -1,17 +1,93 @@
 services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
   postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: codeinsight-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: codeinsight_ai
       TZ: Asia/Kolkata
-      # PGTZ: Asia/Kolkata
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Ollama (LLM runtime) ────────────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: codeinsight-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    healthcheck:
+      # Change localhost to 127.0.0.1 and add a longer start_period
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 60s # <--- CRITICAL: Gives Ollama 1 minute to wake up before failing
+    restart: unless-stopped
+
+  # Pull llama3.2 model on first startup (one-shot init container)
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: codeinsight-ollama-pull
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["ollama", "pull", "llama3.2"]
+    restart: "no"
+
+  # ── Spring Boot Backend ─────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./bug-analyzer/codeinsight-ai
+      dockerfile: Dockerfile
+    container_name: codeinsight-backend
+    ports:
+      - "8080:8080"
+    environment:
+      TZ: Asia/Kolkata
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/codeinsight_ai
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      LANGCHAIN4J_OLLAMA_CHAT_MODEL_BASE_URL: http://ollama:11434
+      LANGCHAIN4J_OLLAMA_CHAT_MODEL_MODEL_NAME: llama3.2
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+      ollama-pull:
+        condition: service_completed_successfully
+    volumes:
+      - uploads_data:/app/uploads
+    restart: unless-stopped
+
+  # ── Angular Frontend (nginx) ────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./bug-analyzer/codeinsight-ui
+      dockerfile: Dockerfile
+    container_name: codeinsight-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
 
 volumes:
   pgdata:
+  ollama_data:
+  uploads_data:

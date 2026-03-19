@@ -20,9 +20,17 @@ export class AppComponent {
   title = 'file-upload';
   readonly file1 = signal<File | null>(null);
   readonly file2 = signal<File | null>(null);
+  readonly projectFileError = signal<string>('');
+  readonly logFileError = signal<string>('');
   readonly debuggingResponse = signal<DebuggingResponse | null>(null);
   readonly isLoading = signal<boolean>(false);
-  readonly canSubmit = computed(() => !!this.file1() && !!this.file2() && !this.isLoading());
+  readonly canSubmit = computed(() =>
+    !!this.file1() &&
+    !!this.file2() &&
+    !this.projectFileError() &&
+    !this.logFileError() &&
+    !this.isLoading()
+  );
 
   constructor(private fileUploadService: FileUploadService) {}
 
@@ -30,7 +38,15 @@ export class AppComponent {
     const target = event.target as HTMLInputElement;
     const files = target.files;
     if (files && files.length > 0) {
-      this.file1.set(files[0]);
+      const selectedFile = files[0];
+      if (this.isZipFile(selectedFile)) {
+        this.file1.set(selectedFile);
+        this.projectFileError.set('');
+      } else {
+        this.file1.set(null);
+        this.projectFileError.set('Project file must be a .zip file.');
+        target.value = '';
+      }
     }
   }
 
@@ -38,15 +54,39 @@ export class AppComponent {
     const target = event.target as HTMLInputElement;
     const files = target.files;
     if (files && files.length > 0) {
-      this.file2.set(files[0]);
+      const selectedFile = files[0];
+      if (this.isTxtFile(selectedFile)) {
+        this.file2.set(selectedFile);
+        this.logFileError.set('');
+      } else {
+        this.file2.set(null);
+        this.logFileError.set('Error log file must be a .txt file.');
+        target.value = '';
+      }
     }
+  }
+
+  private isZipFile(file: File): boolean {
+    return file.name.toLowerCase().endsWith('.zip');
+  }
+
+  private isTxtFile(file: File): boolean {
+    return file.name.toLowerCase().endsWith('.txt');
   }
 
   onSubmit(): void {
     const file1 = this.file1();
     const file2 = this.file2();
 
-    if (file1 && file2) {
+    if (!file1) {
+      this.projectFileError.set('Please select a .zip project file.');
+    }
+
+    if (!file2) {
+      this.logFileError.set('Please select a .txt error log file.');
+    }
+
+    if (file1 && file2 && !this.projectFileError() && !this.logFileError()) {
       this.isLoading.set(true);
       this.debuggingResponse.set(null);
       console.log('File 1:', file1.name);

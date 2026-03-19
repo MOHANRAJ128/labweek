@@ -1,24 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FileUploadService } from './service/file-upload.service';
+import { DebuggingResultsComponent } from './components/debugging-results/debugging-results.component';
+
+export interface DebuggingResponse {
+  projectName: string;
+  debuggingResult: string;
+}
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, FormsModule],
+  imports: [RouterOutlet, CommonModule, FormsModule, DebuggingResultsComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'file-upload';
-  file1: File | null = null;
-  file2: File | null = null;
+  readonly file1 = signal<File | null>(null);
+  readonly file2 = signal<File | null>(null);
+  readonly debuggingResponse = signal<DebuggingResponse | null>(null);
+  readonly isLoading = signal<boolean>(false);
+  readonly canSubmit = computed(() => !!this.file1() && !!this.file2() && !this.isLoading());
+
+  constructor(private fileUploadService: FileUploadService) {}
 
   onFile1Selected(event: Event): void {
     const target = event.target as HTMLInputElement;
     const files = target.files;
     if (files && files.length > 0) {
-      this.file1 = files[0];
+      this.file1.set(files[0]);
     }
   }
 
@@ -26,17 +38,32 @@ export class AppComponent {
     const target = event.target as HTMLInputElement;
     const files = target.files;
     if (files && files.length > 0) {
-      this.file2 = files[0];
+      this.file2.set(files[0]);
     }
   }
 
   onSubmit(): void {
-    if (this.file1 && this.file2) {
-      console.log('File 1:', this.file1.name);
-      console.log('File 2:', this.file2.name);
-      alert(`Uploaded:\n1. ${this.file1.name}\n2. ${this.file2.name}`);
+    const file1 = this.file1();
+    const file2 = this.file2();
+
+    if (file1 && file2) {
+      this.isLoading.set(true);
+      this.debuggingResponse.set(null);
+      console.log('File 1:', file1.name);
+      console.log('File 2:', file2.name);
+      this.fileUploadService.debug(file1, file2).subscribe(
+        (response: any) => {
+          console.log('Server response:', response);
+          this.debuggingResponse.set(response);
+          this.isLoading.set(false);
+        },
+        (error: any) => {
+          console.error('Upload error:', error);
+          this.isLoading.set(false);
+        }
+      );
     } else {
-      alert('Please select both files');
+      console.error('Both files must be selected before submitting.');
     }
   }
 }

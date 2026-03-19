@@ -37,7 +37,10 @@ Tasks:
 1 Identify root cause
 2 Trace how incorrect value propagated
 3 Suggest fix
-4. IMPORTANT: Always return the answer in MARKDOWN format. Do not return plain text.
+4. IMPORTANT: Always respond in STRICT markdown format:
+    - Use ### for headings
+    - Use ```java for code
+    - Use bullet points for explanation
 
 Answer like a senior engineer reviewing a pull request.
 """

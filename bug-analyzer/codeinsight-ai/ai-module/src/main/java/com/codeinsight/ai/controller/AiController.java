@@ -1,6 +1,7 @@
 package com.codeinsight.ai.controller;
 
 import com.codeinsight.ai.service.AiDebugService;
+import com.codeinsight.common.model.AiResponse;
 import com.codeinsight.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class AiController {
     }
 
     @PostMapping("/debug")
-    public String debug(
+    public AiResponse debug(
             @RequestParam String projectName,
             @RequestParam("projectFile") MultipartFile projectFile,
             @RequestParam("logFile") MultipartFile logFile) throws Exception {

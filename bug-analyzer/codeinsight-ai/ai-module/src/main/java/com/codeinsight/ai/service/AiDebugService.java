@@ -2,6 +2,7 @@ package com.codeinsight.ai.service;
 
 import com.codeinsight.ai.builder.PromptBuilder;
 import com.codeinsight.ai.client.Assistant;
+import com.codeinsight.common.model.AiResponse;
 import com.codeinsight.indexing.entity.CodeChunkEntity;
 import com.codeinsight.indexing.service.CodeChunkService;
 import com.codeinsight.indexing.service.CodeContextService;
@@ -64,9 +65,13 @@ public class AiDebugService {
         return methodsSection.toString();
     }
 
-    public String analyzeAndDebug(String projectName, MultipartFile projectFile, MultipartFile logFile) throws Exception {
+    public AiResponse analyzeAndDebug(String projectName, MultipartFile projectFile, MultipartFile logFile) throws Exception {
         UUID projectId = projectService.uploadProject(projectName,projectFile);
         UUID logId = logService.uploadAndParse(projectId, logFile);
-        return generatePrompt(projectId, logId);
+
+        return AiResponse.builder()
+                .debuggingResult(generatePrompt(projectId, logId))
+                .projectName(projectName)
+                .build();
     }
 }

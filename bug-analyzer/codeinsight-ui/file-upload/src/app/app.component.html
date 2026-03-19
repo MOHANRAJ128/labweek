@@ -10,7 +10,7 @@
         (change)="onFile1Selected($event)"
         required
       />
-      <span class="file-name" *ngIf="file1">Selected: {{ file1.name }}</span>
+      <span class="file-name" *ngIf="file1()">Selected: {{ file1()?.name }}</span>
     </div>
 
     <div class="form-group">
@@ -21,11 +21,24 @@
         (change)="onFile2Selected($event)"
         required
       />
-      <span class="file-name" *ngIf="file2">Selected: {{ file2.name }}</span>
+      <span class="file-name" *ngIf="file2()">Selected: {{ file2()?.name }}</span>
     </div>
 
-    <button type="submit" class="submit-btn" [disabled]="!file1 || !file2">Upload Files</button>
+    <button type="submit" class="submit-btn" [disabled]="!canSubmit()">
+      {{ isLoading() ? 'Analyzing...' : 'Upload Files' }}
+    </button>
   </form>
+
+  <div class="results-wrapper" *ngIf="!isLoading() && debuggingResponse()">
+    <h2 class="results-title">Analysis Results</h2>
+    <p class="results-project">Project: {{ debuggingResponse()?.projectName }}</p>
+    <app-debugging-results [response]="debuggingResponse()"></app-debugging-results>
+  </div>
+</div>
+
+<div class="loading-spinner" *ngIf="isLoading()">
+  <div class="spinner"></div>
+  <p>Analyzing your files...</p>
 </div>
 
 <router-outlet />

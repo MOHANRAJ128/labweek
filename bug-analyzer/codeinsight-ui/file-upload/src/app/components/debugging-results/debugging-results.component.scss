@@ -1,0 +1,40 @@
+.section-content {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Headings */
+h3 {
+  color: #1976d2;
+  margin-top: 12px;
+}
+
+h4 {
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Code block */
+pre {
+  background: #1e1e1e;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+/* Inline code */
+code {
+  background: #eee;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* Lists */
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 5px;
+}

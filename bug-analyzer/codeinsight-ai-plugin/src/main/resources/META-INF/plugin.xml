@@ -1,0 +1,15 @@
+<idea-plugin>
+    <id>com.codeinsight.plugin</id>
+    <name>CodeInsight AI Plugin</name>
+    <vendor>Mohan</vendor>
+
+    <actions>
+        <action id="CodeInsight.Analyze"
+                class="com.codeinsight.plugin.AnalyzeAction"
+                text="Analyze with CodeInsight AI"
+                description="Send project to AI analyzer">
+
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>

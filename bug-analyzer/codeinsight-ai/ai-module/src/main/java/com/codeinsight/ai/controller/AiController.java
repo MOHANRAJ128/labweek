@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -31,5 +32,13 @@ public class AiController {
             @RequestParam("logFile") MultipartFile logFile) throws Exception {
 
         return debugService.analyzeAndDebug(projectName,projectFile,logFile);
+    }
+
+    @PostMapping("/api/analyze")
+    public String analyze(@RequestBody Map<String, String> request) {
+
+        String projectPath = request.get("projectPath");
+
+        return "Received project path: " + projectPath;
     }
 }

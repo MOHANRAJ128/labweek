@@ -36,6 +36,9 @@ uploads/
 # Maven / Java build output (multi-module)
 **/target/
 
+# Gradle build output
+**/build/
+
 # Node / Angular build output
 **/node_modules/
 **/dist/

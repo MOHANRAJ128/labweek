@@ -37,7 +37,7 @@ Tasks:
 1 Identify root cause
 2 Trace how incorrect value propagated
 3 Suggest fix
-4. IMPORTANT: Always respond in STRICT markdown format:
+4 IMPORTANT: Always respond in STRICT markdown format:
     - Use ### for headings
     - Use ```java for code
     - Use bullet points for explanation
